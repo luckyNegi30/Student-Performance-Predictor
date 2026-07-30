@@ -27,19 +27,19 @@ A Machine Learning based web application that predicts student performance based
 - ## Screenshots
 
 ### Register Page
-![Register Page](register.png)
+![Register Page](r.png)
 
 ### Login Page
-![Login Page](login.png)
+![Login Page](l.png)
 
 ### Home Page
-![Home Page](home.png)
+![Home Page](ho.png)
 
 ### Prediction Page
-![Prediction Page](prediction.png)
+![Prediction Page](p.png)
 
 ### Result Page
-![Result Page](result.png)
+![Result Page](re.png)
 - `train_model.py` - ML model training
 - `manage.py` - Django project management
 
