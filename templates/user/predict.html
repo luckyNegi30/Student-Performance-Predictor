@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: whitesmoke;
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, #020617, #0f172a);
+        }
+        
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+        }
+        
+        .form-container {
+            max-width: 1100px;
+            min-height: 500px;
+            margin: 40px auto;
+            display: flex;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(225, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 2);
+        }
+        
+        .sidebar {
+            width: 50%;
+            background: #020617;
+            color: white;
+            padding: 30px;
+        }
+        
+        .steps li {
+            list-style: none;
+            padding: 10px;
+            opacity: 0.5;
+            font-size: 30px;
+        }
+        
+        .steps .active {
+            color: #00ffcc;
+            font-weight: bold;
+            opacity: 1;
+            font-size: 30px;
+        }
+        
+        .form-section {
+            width: 70%;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            padding: 30px;
+            color: white;
+            font-size: 22px;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .form-control {
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark px-4 ">
+        <span class="navbar-brand">🎓 Student Performance Predictor</span>
+    </nav>
+
+    <div class="container">
+
+        <div class="form-container">
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h5>fill in the details to get personal insights about your academic performance</h5>
+                <ul class="steps">
+                    <li class="active"> 📊 Academic Metrics</li>
+                    <li>📚 Study Habits</li>
+                    <li> 💪 Lifestyle Insights</li>
+                </ul>
+            </div>
+
+            <!-- FORM -->
+            <div class="form-section">
+
+                <form method="POST" action="/predict/">
+                    {% csrf_token %}
+
+                    <!-- STEP 1 -->
+                    <div class="form-step active">
+                        <h4 class="text-primary">Step 1</h4>
+                        <h4 class="mb-3">Academic Metrics</h4>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">Study Hours</label>
+                                <input name="study_hours" type="number" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Attendance (%)</label>
+                                <input name="attendance" type="number" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Past Performance</label>
+                                <select name="performance" class="form-control">
+                        <option selected >Select</option>           
+                        <option value="0">Poor</option>
+                        <option value="1">Average</option>
+                        <option value="2">Good</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Extracurricular Involvement</label>
+                                <select name="extra" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-step">
+                        <h4 class="text-primary">Step 2</h4>
+                        <h4 class="mb-3">Study Habits</h4>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">Study Environment</label>
+                                <select name="environment" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option><option value="1">Moderate</option><option value="2">High</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Preferred Study Material</label>
+                                <select name="material" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Books</option>
+                        <option value="1">Online</option>
+                        <option value="2">Both</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Class Participation</label>
+                                <select name="participation" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Group Study Frequency</label>
+                                <select name="group_study" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Technology Usage</label>
+                                <select name="tech_usage" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-step">
+                        <h4 class="text-primary">Step 3</h4>
+                        <h4 class="mb-3">Lifestyle</h4>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label">Sleep Hours</label>
+                                <input name="sleep" type="number" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Social Media Use</label>
+                                <select name="social" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Stress Level</label>
+                                <select name="stress" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Nutrition Habit</label>
+                                <select name="nutrition" class="form-control">
+                                    <option selected >Select</option> 
+                        <option value="0">Low</option>
+                        <option value="1">Moderate</option>
+                        <option value="2">High</option>
+                        </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="text-end mt-3">
+                        <button type="button" class="btn btn-secondary" id="prevBtn">Prev</button>
+                        <button type="button" class="btn btn-success" id="nextBtn">Next</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+
+        const steps = document.querySelectorAll(".form-step");
+        const sidebarSteps = document.querySelectorAll(".steps li");
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+
+        function showStep(step) {
+            steps.forEach((s, i) => {
+                s.classList.toggle("active", i === step);
+                sidebarSteps[i].classList.toggle("active", i === step);
+            });
+
+            nextBtn.innerText = (step === steps.length - 1) ? "Predict" : "Next";
+        }
+
+        nextBtn.onclick = () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            } else {
+                document.querySelector("form").submit();
+            }
+        }
+
+        prevBtn.onclick = () => {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

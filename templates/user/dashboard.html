@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+
+    <!-- ✅ Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- ✅ Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: whitesmoke;
+        }
+        
+        .navbar-custom {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(90deg, #020617, #0f172a);
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 220px;
+            height: 100%;
+            background: #2c3e50;
+        }
+        
+        .sidebar a {
+            display: block;
+            padding: 14px;
+            color: white;
+            text-decoration: none;
+            font-size: 25px;
+            border-radius: 8px;
+            margin: 5px;
+            transition: 0.3s;
+        }
+        
+        .sidebar a:hover {
+            background: linear-gradient(90deg, #1e3a8a, #2563eb);
+        }
+        
+        .main {
+            margin-left: 220px;
+            padding: 25px;
+            width: calc(100% - 220px);
+        }
+        
+        .welcome-box {
+            display: inline;
+            background: linear-gradient(90deg, #3b82f6, #6366f1);
+            color: black;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #007bff;
+        }
+        
+        .card-custom {
+            background: beige;
+            border-radius: 10px;
+            text-align: center;
+            color: black;
+            font-size: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 2);
+        }
+        
+        .blue {
+            background: #3b82f6;
+        }
+        
+        .orangered {
+            background: #f97316;
+        }
+        
+        .yellow {
+            background: #facc15;
+        }
+        
+        .red {
+            background: #ef4444;
+        }
+        
+        .section-heading {
+            font-size: 25px;
+            font-weight: bold;
+            margin: 25px 0 15px;
+            color: #2c3e50;
+        }
+        
+        .btn-custom {
+            background: #22c55e;
+            color: white;
+            border-radius: 20px;
+            font-size: 18px;
+        }
+        
+        #scoreChart {
+            max-width: 300px;
+            max-height: 300px;
+            margin: auto;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom px-4 py-3 d-flex justify-content-between">
+        <div>🎓 Student Performance Predictor</div>
+        <div>👤 {{ request.user }}</div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="{% url 'dashboard' %}">🏠 Dashboard</a>
+        <a href="{% url 'predict' %}">📊 Predict</a>
+        <a href="{% url 'profile' %}">👤 Profile</a>
+        <a href="{% url 'history' %}">📜 History</a>
+        <a href="{% url 'login' %}">🔓 Logout</a>
+    </div>
+
+    <!-- Main -->
+    <div class="main container-fluid">
+
+        <!-- Welcome -->
+        <div class="welcome-box d-flex justify-content-between align-items-center">
+            <div>
+                <h2>Welcome,{{ request.user }} </h2>
+                <p>Predict, analyze and improve your academic performance using smart insights.</p>
+            </div>
+            <div>
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="profile-img">
+            </div>
+        </div>
+
+        <div class="section-heading">📊 Your Performance</div>
+
+        <!-- Cards -->
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card-custom blue p-3">
+                    <h3>📊 Last Score</h3>
+                    <p>{% if last_score %} {{ last_score }} {% else %} Not Available {% endif %}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card-custom orangered p-3">
+                    <h3>📈 Total Predictions</h3>
+                    <p>{{ total_predictions }}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card-custom yellow p-3">
+                    <h3>📊 Average Score</h3>
+                    <p>{% if avg_score %} {{ avg_score }} {% else %} Not Available {% endif %}</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card-custom red p-3">
+                    <h3>⏱ Last Activity</h3>
+                    <p>{% if last_date %} {{ last_date }} {% else %} No Activity {% endif %}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ PIE CHART -->
+        <div class="card p-3 mt-4">
+            <h4>📊 Last Performance Overview</h4>
+            <canvas id="scoreChart"></canvas>
+        </div>
+
+        <!-- Buttons -->
+        <div class="mt-4">
+            <a href="{% url 'predict' %}" class="btn btn-custom me-2">🔮 Predict Now</a>
+            <a href="{% url 'history' %}" class="btn btn-custom">📜 View History</a>
+        </div>
+
+    </div>
+
+    <!-- ✅ FIXED SCRIPT -->
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded",
+            function() {
+                const labels = JSON.parse('{{ labels|escapejs }}');
+                const scores = JSON.parse('{{ scores|escapejs }}');
+
+                console.log(labels);
+                console.log(scores);
+
+                const ctx = document.getElementById('scoreChart');
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: scores,
+                            backgroundColor: [
+                                "#4CAF50",
+                                "#2196F3",
+                                "#FF9800",
+                                "#F44336",
+                                "#9C27B0"
+                            ]
+                        }]
+                    }
+                });
+            });
+    </script>
+
+
+</body>
+
+</html>
